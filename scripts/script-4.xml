@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet  author="Admin" id="4">
+        <createTable tableName="DTIN_PR_TT_TRANSMISSION_TYPE">
+            <column name="PTT_CODE" type="varchar(10)">
+            </column>
+            <column name="PTT_SDESC" type="varchar(20)"/>
+            <column name="PTT_LDESC" type="varchar(50)"/>
+            <column name="PTT_ACTIVE" type="varchar(1)"/>
+            <column name="CREATED_BY" type="varchar(50)"/>
+            <column name="CREATE_DATE" type="datetime"/>
+            <column name="MODIFIED_BY" type="varchar(50)"/>
+            <column name="MODIFIED_DATE" type="datetime"/>
+            <column name="ADT_CREATEUSER" type="varchar(50)"/>
+            <column name="ADT_CREATEDATE" type="datetime"/>
+            <column name="ADT_MODIFIEDUSER" type="varchar(50)"/>
+            <column name="ADT_MODIFIEDDATE" type="datetime"/>
+            <column name="ADT_ROUTINGSTATUS" type="varchar(2)"/>
+            <column name="ADT_LASTROUTINGDATE" type="datetime"/>
+            <column name="ADT_LASTROUTINGUSER" type="varchar(50)"/>
+        </createTable>
+        <createTable tableName="DTIN_PR_TT_TRANSMISSION_TYPE_1">
+            <column name="PTT_CODE" type="varchar(10)">
+            </column>
+            <column name="PTT_SDESC" type="varchar(20)"/>
+            <column name="PTT_LDESC" type="varchar(50)"/>
+            <column name="PTT_ACTIVE" type="varchar(1)"/>
+            <column name="CREATED_BY" type="varchar(50)"/>
+            <column name="CREATE_DATE" type="datetime"/>
+            <column name="MODIFIED_BY" type="varchar(50)"/>
+            <column name="MODIFIED_DATE" type="datetime"/>
+            <column name="ADT_CREATEUSER" type="varchar(50)"/>
+            <column name="ADT_CREATEDATE" type="datetime"/>
+            <column name="ADT_MODIFIEDUSER" type="varchar(50)"/>
+            <column name="ADT_MODIFIEDDATE" type="datetime"/>
+            <column name="ADT_ROUTINGSTATUS" type="varchar(2)"/>
+            <column name="ADT_LASTROUTINGDATE" type="datetime"/>
+            <column name="ADT_LASTROUTINGUSER" type="varchar(50)"/>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
