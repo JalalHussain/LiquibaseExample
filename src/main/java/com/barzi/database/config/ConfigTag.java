@@ -10,7 +10,8 @@ import java.util.ResourceBundle;
  * <pre>
  *     This class is a utility class to fetch/get the properties for this application specified in the application.properties file.
  * </pre>
- *@author barzi
+ *
+ * @author barzi
  */
 public class ConfigTag {
     private static final Logger logger = LoggerFactory.getLogger(ConfigTag.class); //Logger instance for logging.
@@ -34,25 +35,24 @@ public class ConfigTag {
      * @return Returns a value agains a string key.
      */
     public static String getProperty(String key) {
-        String propertyValue=APPLICATION_PROPS.getString(key);
-        if (propertyValue==null){
-            logger.error(String.format("The resource has not been initialized hence no property is resolved against key {0}",key));
-            propertyValue="";
+        String propertyValue = APPLICATION_PROPS.getString(key);
+        if (propertyValue == null) {
+            logger.error(String.format("The resource has not been initialized hence no property is resolved against key {0}", key));
+            propertyValue = "";
         }
         return propertyValue;
     }
 
     /**
-     *
-     * @param key A string key against which a value will be resolved.
+     * @param key          A string key against which a value will be resolved.
      * @param defaultValue If a value against a key isn't present then the default provided value will be returned.
      * @return Returns a value agains a string key.
      */
-    public static String getProperty(String key,String defaultValue) {
-        String propertyValue=APPLICATION_PROPS.getString(key);
-        if (propertyValue==null){
+    public static String getProperty(String key, String defaultValue) {
+        String propertyValue = APPLICATION_PROPS.getString(key);
+        if (propertyValue == null) {
             return defaultValue;
-        }else {
+        } else {
             return propertyValue;
         }
     }
