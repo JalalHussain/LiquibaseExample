@@ -1,6 +1,5 @@
 package com.barzi.database;
 
-import com.barzi.Main;
 import com.barzi.database.config.ConfigTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +7,13 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * <pre>
+ *     This class is Database utility class helps by providing customized ways for using different
+ *     functionality provided by underlying database Database.
+ * </pre>
+ *@author barzi
+ */
 public class DatabaseUtil {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseUtil.class); //Logger instance for logging.
     private static Connection connection=null; //Connection object.

@@ -1,11 +1,17 @@
 package com.barzi.database.config;
 
-import com.barzi.database.DatabaseUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ResourceBundle;
 
+/**
+ * <pre>
+ *     This class is a utility class to fetch/get the properties for this application specified in the application.properties file.
+ * </pre>
+ *@author barzi
+ */
 public class ConfigTag {
     private static final Logger logger = LoggerFactory.getLogger(ConfigTag.class); //Logger instance for logging.
 

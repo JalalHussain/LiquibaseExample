@@ -4,6 +4,12 @@ import com.barzi.liquibase.LiquibaseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * <pre>
+ *     Main class.
+ * </pre>
+ *@author barzi
+ */
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);  //Logger instance for logging

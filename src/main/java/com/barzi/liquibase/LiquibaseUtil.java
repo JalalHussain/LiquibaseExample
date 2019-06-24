@@ -12,7 +12,13 @@ import liquibase.resource.FileSystemResourceAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * <pre>
+ *     This class is Liquibase utility class helps by providing customized ways for using different
+ *     functionality provided by Liquibase.
+ * </pre>
+ *@author barzi
+ */
 public class LiquibaseUtil {
     private static final Logger logger = LoggerFactory.getLogger(LiquibaseUtil.class);  //Logger instance for logging
 
