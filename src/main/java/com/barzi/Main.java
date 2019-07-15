@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class Main {
+
     private static final Logger logger = LoggerFactory.getLogger(Main.class);  //Logger instance for logging
 
     /**
@@ -27,14 +28,17 @@ public class Main {
      */
     public static void main(String args[]) {
         logger.info("Starting liquibase example...");
-        testCompareDatabase();
+
+
+        integrateChanges();
+        //compareDatabase();
         logger.info("finished liquibase example");
     }
 
     /**
-     * Test method to call Database up grader.
+     * Method to call Database up-grader.
      */
-    public static void testIntegrateChanges() {
+    public static void integrateChanges() {
 
         logger.info("Creating liquibase Utility...");
         LiquibaseUtil liquibaseUtil = new LiquibaseUtil();
@@ -46,9 +50,9 @@ public class Main {
     }
 
     /**
-     * Test method to call difference checker.
+     * Method to call Database difference checker.
      */
-    public static void testCompareDatabase() {
+    public static void compareDatabase() {
         logger.info("Creating liquibase Utility...");
         LiquibaseUtil liquibaseUtil = new LiquibaseUtil();
         logger.info("Liquibase Utility created");
@@ -56,5 +60,18 @@ public class Main {
         logger.info("Attempting to compare Databases...");
         DiffResult diffResult = liquibaseUtil.fetchDifferences();
         logger.info("Attempt to compare Databases finished");
+    }
+
+    /**
+     * Method to call Liquibase Precondition demo.
+     */
+    public static void preConditions(){
+        logger.info("Creating liquibase Utility...");
+        LiquibaseUtil liquibaseUtil = new LiquibaseUtil();
+        logger.info("Liquibase Utility created");
+        logger.info("Started liquibase example");
+        logger.info("Attempting call Liquibase Precondition demo...");
+        liquibaseUtil.preConditions();
+        logger.info("Liquibase Precondition demo finished");
     }
 }

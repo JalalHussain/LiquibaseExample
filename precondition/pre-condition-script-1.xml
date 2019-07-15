@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.8"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.8
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.8.xsd">
+    <preConditions>
+        <dbms type="mssql" />
+        <runningAs username="sa" />
+    </preConditions>
+
+    <changeSet id="5" author="Barzi">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from CHANGE_LOG_USER_2</sqlCheck>
+        </preConditions>
+        <comment>If there are no records in table CHANGE_LOG_USER_2 then only it needs to be dropped, it will persist as it is otherwise .</comment>
+        <dropTable tableName="CHANGE_LOG_USER_2"/>
+    </changeSet>
+</databaseChangeLog>

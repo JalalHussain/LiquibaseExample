@@ -16,12 +16,12 @@ import java.sql.DriverManager;
  * @author barzi
  */
 public class DatabaseUtil {
+
     private static final Logger logger = LoggerFactory.getLogger(DatabaseUtil.class); //Logger instance for logging.
 
     /**
      * <pre>
-     *     This method will check if the connection is NULL or connection is closed then a new connection will be created else
-     *     the same connection object will be returned.
+     *     This method will create a new connection.
      * </pre>
      *
      * @return connection Returns a connection object.

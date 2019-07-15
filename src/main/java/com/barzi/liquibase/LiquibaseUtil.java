@@ -16,21 +16,24 @@ import liquibase.resource.FileSystemResourceAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+
 /**
  * <pre>
- *     This class is Liquibase utility class helps by providing customized ways for using different
+ *     This class is Liquibase utility class; helps providing customized ways for using different
  *     functionality provided by Liquibase.
  * </pre>
  *
  * @author barzi
  */
 public class LiquibaseUtil {
+
     private static final Logger logger = LoggerFactory.getLogger(LiquibaseUtil.class);  //Logger instance for logging
 
     /**
      * <pre>
      *     This method will attempt to read the script file(s)(as configured) and execute the database changes,
-     *     if any change file encounters any exception/error the changes will be roll backed.
+     *     if any change file encounters any exception/error all changes will be roll backed.
      * </pre>
      */
     public void integrateChanges() {
@@ -61,19 +64,7 @@ public class LiquibaseUtil {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", exception);
             failure = true;
         } finally {
-            if (connection != null) {
-                try {
-                    if (failure) {
-                        logger.info("Reverting partially integrated changes...");
-                        liquibase.rollback(Integer.parseInt(ConfigTag.getProperty("liquibase.rollbackto")), "");
-                        logger.info("Reverted partially integrated changes");
-                    }
-                    liquibase.forceReleaseLocks();
-                    connection.close();
-                } catch (Exception exception) {
-                    logger.error("Exception encountered while attempting to revert partially integrated changes, please see details ", exception);
-                }
-            }
+            close(connection, liquibase, failure);
         }
     }
 
@@ -116,7 +107,7 @@ public class LiquibaseUtil {
             try {
                 liquibase.forceReleaseLocks();
                 referenceConnection.close();
-                targetConnection.close();
+                close(targetConnection, liquibase, false);
             } catch (Exception exception) {
                 logger.error("Exception encountered while closing connections, please see details ", exception);
             }
@@ -124,4 +115,85 @@ public class LiquibaseUtil {
 
         return diffResult;
     }
+
+    /**
+     * <pre>
+     *     This method will demonstrate how can preconditions in liquibase be utilized.
+     *     There are several reasons to use preconditions, including:
+     *
+     *     <ul>
+     *
+     *      <li>Document what assumptions the writers of the changelog had when creating it. </li>
+     *      <li>Enforce that those assumptions are not violated by users running the changelog</li>
+     *      <li>Perform data checks before performing an unrecoverable change such as drop_Table</li>
+     *      <li>Control what changesets are run and not run based on the state of the database</li>
+     *
+     *      Reference: Liquibase documentation.
+     *    </ul>
+     *
+     * </pre>
+     */
+    public void preConditions() {
+
+        logger.info("Getting connection of the configured database...");
+        java.sql.Connection connection = DatabaseUtil.getConnection("target");
+        logger.info("Connection received");
+        Liquibase liquibase = null;
+        boolean failure = false;
+        JdbcConnection jdbcConn = null;
+        try {
+            jdbcConn = new JdbcConnection(connection);
+            logger.info("Getting database object from connection...");
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(jdbcConn);
+            logger.info("Database object received");
+            logger.info("Configuring liquibase...");
+            liquibase = new Liquibase(ConfigTag.getProperty("changelog.file.path", "db.changelog.xml"), new FileSystemResourceAccessor(), database);
+            logger.info("Liquibase configured");
+            logger.info("Updating change as with added precondition...");
+            liquibase.update("");
+            logger.info("Changes updated");
+        } catch (DatabaseException databaseException) {
+            logger.error("Exception encountered while attempting to integrate change logs, please see details ", databaseException);
+            failure = true;
+        } catch (LiquibaseException liquibaseException) {
+            logger.error("Exception encountered while attempting to integrate change logs, please see details ", liquibaseException);
+            failure = true;
+        } catch (Exception exception) {
+            logger.error("Exception encountered while attempting to integrate change logs, please see details ", exception);
+            failure = true;
+        } finally {
+            close(connection, liquibase, failure);
+        }
+    }
+
+    /**
+     * <pre>
+     *     For reusability purposes this method will help closing all opened objects.
+     * </pre>
+     *
+     * @param connection The connection object.
+     * @param liquibase  The liquibase object.
+     * @param failure    The success/failure flag.
+     * @return flag Returns true after successful close operation false otherwise.
+     */
+    private boolean close(Connection connection, Liquibase liquibase, boolean failure) {
+        boolean closedSuccessfully = false;
+        if (connection != null) {
+            try {
+                if (failure) {
+                    logger.info("Reverting partially integrated changes...");
+                    liquibase.rollback(Integer.parseInt(ConfigTag.getProperty("liquibase.rollbackto")), "");
+                    logger.info("Reverted partially integrated changes");
+                }
+                liquibase.forceReleaseLocks();
+                connection.close();
+                closedSuccessfully = true;
+            } catch (Exception exception) {
+                closedSuccessfully = false;
+                logger.error("Exception encountered while attempting to revert partially integrated changes, please see details ", exception);
+            }
+        }
+        return closedSuccessfully;
+    }
+
 }
