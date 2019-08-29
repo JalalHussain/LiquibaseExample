@@ -74,4 +74,11 @@ public class Main {
         DiffResult diffResult = liquibaseUtil.fetchDifferences();
         logger.info("Attempt to compare Databases finished");
     }
+
+    public static void extraMethod() {
+        logger.info("Creating Something...");
+
+        logger.info("Something creation finished");
+    }
+
 }
