@@ -50,19 +50,6 @@ public class Main {
     }
 
     /**
-     * Method to call Database difference checker.
-     */
-    public static void compareDatabase() {
-        logger.info("Creating liquibase Utility...");
-        LiquibaseUtil liquibaseUtil = new LiquibaseUtil();
-        logger.info("Liquibase Utility created");
-        logger.info("Started liquibase example");
-        logger.info("Attempting to compare Databases...");
-        DiffResult diffResult = liquibaseUtil.fetchDifferences();
-        logger.info("Attempt to compare Databases finished");
-    }
-
-    /**
      * Method to call Liquibase Precondition demo.
      */
     public static void preConditions(){
@@ -73,5 +60,18 @@ public class Main {
         logger.info("Attempting call Liquibase Precondition demo...");
         liquibaseUtil.preConditions();
         logger.info("Liquibase Precondition demo finished");
+    }
+
+    /**
+     * Method to call Database difference checker.
+     */
+    public static void compareDatabase() {
+        logger.info("Creating liquibase Utility...");
+        LiquibaseUtil liquibaseUtil = new LiquibaseUtil();
+        logger.info("Liquibase Utility created");
+        logger.info("Started liquibase example");
+        logger.info("Attempting to compare Databases...");
+        DiffResult diffResult = liquibaseUtil.fetchDifferences();
+        logger.info("Attempt to compare Databases finished");
     }
 }

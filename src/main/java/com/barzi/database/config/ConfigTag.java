@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
  * @author barzi
  */
 public class ConfigTag {
+
     private static final Logger logger = LoggerFactory.getLogger(ConfigTag.class); //Logger instance for logging.
 
     private static String APPLICATION_PROPS_FILE_NAME = "application";  // The property resource file name .
