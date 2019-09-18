@@ -41,7 +41,7 @@ public class LiquibaseUtil {
         java.sql.Connection connection = DatabaseUtil.getConnection("target");
         logger.info("Connection received");
         Liquibase liquibase = null;
-        boolean failure = false;
+        boolean failed = false;
         JdbcConnection jdbcConn = null;
         try {
             jdbcConn = new JdbcConnection(connection);
@@ -56,15 +56,15 @@ public class LiquibaseUtil {
             logger.info("Changes integrated");
         } catch (DatabaseException databaseException) {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", databaseException);
-            failure = true;
+            failed = true;
         } catch (LiquibaseException liquibaseException) {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", liquibaseException);
-            failure = true;
+            failed = true;
         } catch (Exception exception) {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", exception);
-            failure = true;
+            failed = true;
         } finally {
-            close(connection, liquibase, failure);
+            close(connection, liquibase, failed);
         }
     }
 
@@ -139,7 +139,7 @@ public class LiquibaseUtil {
         java.sql.Connection connection = DatabaseUtil.getConnection("target");
         logger.info("Connection received");
         Liquibase liquibase = null;
-        boolean failure = false;
+        boolean failed = false;
         JdbcConnection jdbcConn = null;
         try {
             jdbcConn = new JdbcConnection(connection);
@@ -154,15 +154,15 @@ public class LiquibaseUtil {
             logger.info("Changes updated");
         } catch (DatabaseException databaseException) {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", databaseException);
-            failure = true;
+            failed = true;
         } catch (LiquibaseException liquibaseException) {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", liquibaseException);
-            failure = true;
+            failed = true;
         } catch (Exception exception) {
             logger.error("Exception encountered while attempting to integrate change logs, please see details ", exception);
-            failure = true;
+            failed = true;
         } finally {
-            close(connection, liquibase, failure);
+            close(connection, liquibase, failed);
         }
     }
 
@@ -173,27 +173,28 @@ public class LiquibaseUtil {
      *
      * @param connection The connection object.
      * @param liquibase  The liquibase object.
-     * @param failure    The success/failure flag.
+     * @param isFailed    The success/failure flag.
      * @return flag Returns true after successful close operation false otherwise.
      */
-    private boolean close(Connection connection, Liquibase liquibase, boolean failure) {
-        boolean closedSuccessfully = false;
+    private boolean close(Connection connection, Liquibase liquibase, boolean isFailed) {
+        boolean closed = false;
+        int rollBackIndex=Integer.parseInt(ConfigTag.getProperty("liquibase.rollbackto"));
         if (connection != null) {
             try {
-                if (failure) {
+                if (isFailed) {
                     logger.info("Reverting partially integrated changes...");
-                    liquibase.rollback(Integer.parseInt(ConfigTag.getProperty("liquibase.rollbackto")), "");
+                    liquibase.rollback(rollBackIndex, "");
                     logger.info("Reverted partially integrated changes");
                 }
                 liquibase.forceReleaseLocks();
                 connection.close();
-                closedSuccessfully = true;
+                closed = true;
             } catch (Exception exception) {
-                closedSuccessfully = false;
+                closed = false;
                 logger.error("Exception encountered while attempting to revert partially integrated changes, please see details ", exception);
             }
         }
-        return closedSuccessfully;
+        return closed;
     }
 
 }
